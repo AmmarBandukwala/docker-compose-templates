@@ -1,0 +1,77 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: admin@123
+      POSTGRES_DB: ignition
+    networks:
+      - mynetwork
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=johndoe@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin@123
+    ports:
+      - 5050:5050
+    restart: always
+    networks:
+      - mynetwork
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    networks:
+      - mynetwork
+
+  ignition:
+    image: inductiveautomation/ignition:8.1.26
+    ports:
+      - 8088:8088
+    environment:
+      IGNITION_UID: 2003
+      IGNITION_GID: 2003
+      ACCEPT_IGNITION_EULA: Y
+    volumes:
+      - ignition-data:/usr/local/bin/ignition/data
+    networks:
+      - mynetwork
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafana
+    volumes:
+      - ./grafana:/etc/grafana/provisioning/datasources
+    networks:
+      - mynetwork
+
+  prometheus:
+    image: prom/prometheus:v2.50.1
+    ports:
+      - 9000:9090
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  ignition-data:

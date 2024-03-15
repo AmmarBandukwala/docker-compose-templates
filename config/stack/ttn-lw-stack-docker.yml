@@ -1,0 +1,131 @@
+# Identity Server configuration
+# Email configuration for "REPLACEME.southcentralus.cloudapp.azure.com"
+is:
+  email:
+    sender-name: "The Things Stack"
+    sender-address: "noreply@REPLACEME.southcentralus.cloudapp.azure.com"
+    network:
+      name: "The Things Stack"
+      console-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/console"
+      identity-server-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth"
+
+    # If sending email with Sendgrid
+    # provider: sendgrid
+    # sendgrid:
+    #   api-key: '...'              # enter Sendgrid API key
+
+    # If sending email with SMTP
+    # provider: smtp
+    # smtp:
+    #   address:  '...'             # enter SMTP server address
+    #   username: '...'             # enter SMTP server username
+    #   password: '...'             # enter SMTP server password
+
+  # Web UI configuration for "REPLACEME.southcentralus.cloudapp.azure.com":
+  oauth:
+    ui:
+      canonical-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth"
+      is:
+        base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+
+# HTTP server configuration
+http:
+  cookie:
+    block-key: "54bba7a643071e3bdf35bf629957e5df8fb4436a7662d239c46bf59156589550" # generate 32 bytes (openssl rand -hex 32)
+    hash-key: "bfe53899946308acfe9e5d0c261be6fc14ad7d4ab72a29c67b6bf7a341f3f040a9a5a85e0b82073ae1db0bbcadfe4ce64c5e4045d08aab46bad3939c638b658d" # generate 64 bytes (openssl rand -hex 64)
+  metrics:
+    password: "metrics" # choose a password
+  pprof:
+    password: "pprof" # choose a password
+
+# If using custom certificates:
+# tls:
+#   source: file
+#   root-ca: /run/secrets/ca.pem
+#   certificate: /run/secrets/cert.pem
+#   key: /run/secrets/key.pem
+
+# Let's encrypt for "REPLACEME.southcentralus.cloudapp.azure.com"
+tls:
+  source: "acme"
+  acme:
+    dir: "/var/lib/acme"
+    email: "ammarbanduk@gmail.com"
+    hosts: ["REPLACEME.southcentralus.cloudapp.azure.com"]
+    default-host: "REPLACEME.southcentralus.cloudapp.azure.com"
+
+# If Gateway Server enabled, defaults for "REPLACEME.southcentralus.cloudapp.azure.com":
+gs:
+  mqtt:
+    public-address: "REPLACEME.southcentralus.cloudapp.azure.com:1882"
+    public-tls-address: "REPLACEME.southcentralus.cloudapp.azure.com:8882"
+  mqtt-v2:
+    public-address: "REPLACEME.southcentralus.cloudapp.azure.com:1881"
+    public-tls-address: "REPLACEME.southcentralus.cloudapp.azure.com:8881"
+
+# If Gateway Configuration Server enabled, defaults for "REPLACEME.southcentralus.cloudapp.azure.com":
+gcs:
+  basic-station:
+    default:
+      lns-uri: "wss://REPLACEME.southcentralus.cloudapp.azure.com:8887"
+  the-things-gateway:
+    default:
+      mqtt-server: "mqtts://REPLACEME.southcentralus.cloudapp.azure.com:8881"
+
+# Web UI configuration for "REPLACEME.southcentralus.cloudapp.azure.com":
+console:
+  ui:
+    canonical-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/console"
+    account-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth"
+    is:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    gs:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    gcs:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    ns:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    as:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    js:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    qrg:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    edtc:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    dcs:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+  oauth:
+    authorize-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth/authorize"
+    token-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth/token"
+    logout-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth/logout"
+    client-id: "console"
+    client-secret: "2023202220212020" # choose or generate a secret
+
+# If Application Server enabled, defaults for "REPLACEME.southcentralus.cloudapp.azure.com":
+as:
+  mqtt:
+    public-address: "REPLACEME.southcentralus.cloudapp.azure.com:1883"
+    public-tls-address: "REPLACEME.southcentralus.cloudapp.azure.com:8883"
+  webhooks:
+    downlink:
+      public-address: "REPLACEME.southcentralus.cloudapp.azure.com:1885/api/v3"
+
+# If Device Claiming Server enabled, defaults for "REPLACEME.southcentralus.cloudapp.azure.com":
+dcs:
+  oauth:
+    authorize-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth/authorize"
+    token-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth/token"
+    logout-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/oauth/logout"
+    client-id: "device-claiming"
+    client-secret: "device-claiming" # choose or generate a secret
+  ui:
+    canonical-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/claim"
+    as:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    dcs:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    is:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
+    ns:
+      base-url: "https://REPLACEME.southcentralus.cloudapp.azure.com/api/v3"
